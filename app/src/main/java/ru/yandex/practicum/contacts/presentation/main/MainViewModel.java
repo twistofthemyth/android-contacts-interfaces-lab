@@ -27,10 +27,11 @@ import ru.yandex.practicum.contacts.repository.ContactSourceRepository;
 import ru.yandex.practicum.contacts.mapper.ContactUiMapper;
 import ru.yandex.practicum.contacts.presentation.main.model.MenuClick;
 import ru.yandex.practicum.contacts.presentation.sort.model.SortType;
+import ru.yandex.practicum.contacts.utils.android.OnDebounceListener;
 import ru.yandex.practicum.contacts.utils.java.ThreadUtils;
 import ru.yandex.practicum.contacts.utils.model.MergedContactUtils;
 
-public class MainViewModel extends AndroidViewModel {
+public class MainViewModel extends AndroidViewModel implements OnDebounceListener {
 
     private final ContactSourceRepository contactSourceRepository;
     private final ContactRepository contactRepository;
@@ -210,6 +211,11 @@ public class MainViewModel extends AndroidViewModel {
     private void updateUiState() {
         uiStateLiveDate.setValue(uiState.copy());
         uiState.actions.clear();
+    }
+
+    @Override
+    public void onDebounce() {
+        search();
     }
 
     public static class UiState {
